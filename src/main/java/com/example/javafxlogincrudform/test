@@ -1,0 +1,37 @@
+  public void loginAccount(){
+        String sql = "SELECT username, password FROM admin WHERE username = ? AND password = ?";
+        connect = Database.connect();
+
+        try {
+            Alert alert;
+            if (si_username.getText().isEmpty() || si_password.getText().isEmpty()){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+            }else {
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, si_username.getText());
+                prepare.setString(2, si_password.getText());
+
+                result = prepare.executeQuery();
+
+                if (result.next()) {
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Login");
+                    alert.showAndWait();
+                } else {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Incorrect Username/Password");
+                    alert.showAndWait();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
